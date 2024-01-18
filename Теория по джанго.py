@@ -106,9 +106,12 @@
         │    │          └── img/
         │    └── migrations/
         │        ├── __init__.py
-        │        └── __pycache__    
-        │     
-        │    
+        │        └── __pycache__      
+        │
+        ├── requirements.txt # содержит список всех зависимостей Python, необходимых для запуска вашего веб-приложения (pip install -r requirements.txt)
+        |
+        ├── README.md
+        |    
         └── ...
         
         
@@ -189,6 +192,12 @@
         │    │
         │    └── и другие основные файлы (views, models и тд).py 
         |
+        ├── requirements.txt 
         |
-        |
-        └── и другие основные файлы (views, models и тд).py 
+        ├── README.md
+        |    
+        └── ...
+        
+        
+        
+        
