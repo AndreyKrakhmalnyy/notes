@@ -51,8 +51,19 @@
     7. Создал таблицы 'Users' и 'BirthPlace', связал их связью 'OneToOne' c параметром 'on_delete', зарегистрировал 
        их в 'admin.py'.
     8. Далее провел миграции и создал админку (Admin, abemuH44!)
+    9. Установил компоненты для JWT:
+        # pip install djangorestframework           
+        # pip install djangorestframework-jwt     
+        # pip install djangorestframework-simplejwt
+    10. Добавил в 'settings.py' следующую строку:
+        
+        # REST_FRAMEWORK = {
+        # 'DEFAULT_AUTHENTICATION_CLASSES': (
+        #     'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        # ),
+        # }
     
-
+ 
 Вопросы:
     
     # 1. При создании проекта создаётся 2 папки с одинаковым именем (внешняя папка и внутренняя с файлами). 
