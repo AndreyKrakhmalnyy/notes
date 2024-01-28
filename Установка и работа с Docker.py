@@ -35,7 +35,8 @@
     Установите Docker:
         # sudo apt install docker-ce
         
-    Docker должен быть установлен, демон-процесс запущен, а для процесса активирован запуск при загрузке. Проверьте, что он запущен:
+    Docker должен быть установлен, демон-процесс запущен, а для процесса активирован запуск при загрузке. Проверьте,
+    что он запущен:
         # sudo systemctl status docker
         
     Вывод должен выглядеть примерно следующим образом, указывая, что служба активна и запущена:
@@ -50,3 +51,103 @@
         #     Memory: 46.4M
         #     CGroup: /system.slice/docker.service
         #             └─24321 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.so
+        
+        
+    Также нужно авторизоваться на DockerHub.
+    
+Шаг 2 - Подготовка проекта 
+    Создаём в корневой диретории проекта файл 'Dockerfile' и прописываем команды ниже:
+        
+        # FROM python:3.10
+
+
+        # SHELL ["/bin/bash", "-c"]
+
+        # # Запрещаем создание файлов с кэшем внутри контейнера (1), иначе Python будет создавать .pyc файлы 
+        # # для ускорения повторной компиляции и выполнения программ (0)
+        # ENV PYTHONDONTWRITEBYTECODE 1 
+
+        # # Указываем полный вывод ошибок приложения в stdout (1), а иначе вывод Python будет буферизированным (0)
+        # ENV PYTHONUNBUFFERED 1 
+
+        # # Обновляем пакет pip внутри контейнера
+        # RUN pip install --upgrade pip
+
+
+        # # Обновление списка пакетов из репозиториев APT в контейнере и установка доп пакетов и зависимостей
+        # RUN apt update && apt -qy install gcc libjpeg-dev libxslt-dev libpq-dev gettext cron openssh-client \
+        #     flake8 locales neovim
+
+        # # gcc (GNU Compiler Collection) — набор компиляторов для различных языков программирования, таких как C, C++ и др.
+        # # libjpeg-dev: Библиотека для работы с изображениями в формате JPEG.
+        # # libxslt-dev: Библиотека для работы с XSLT (eXtensible Stylesheet Language Transformations).
+        # # libpq-dev: Настройка для разработки приложений, использующих PostgreSQL.
+        # # gettext: Утилиты для работы с локализацией и интернационализацией.
+        # # cron: Планировщик задач.
+        # # openssh-client: Клиент OpenSSH для подключения к другим удаленным хостам по SSH.
+        # # flake8: Инструмент для проверки стиля кода Python.
+        # # locales: Набор файлов локализации системы.
+
+
+
+
+        # # Создаём нового пользователя с именем "andrey" в контейнере
+        # # -m: Создает домашнюю директорию для пользователя, если она еще не существует.
+        # # -s /bin/bash: Устанавливает исполняемый файл для оболочки по умолчанию для нового пользователя на /bin/bash.
+        # # chmod 777 /opt /run: Эта команда устанавливает права доступа для директорий /opt и /run
+        # RUN useradd -rms /bin/bash andrey && chmod 777 /opt /run
+
+        # # Указываем рабочую директории внутри контейнера
+        # WORKDIR /pharm_app
+
+        # # Копируем файл с зависимостями
+        # COPY requirements.txt .
+
+        # # Устанавливаем зависимости проекта
+        # RUN pip install -r requirements.txt
+
+        # # Копируем модержимое проекта в директорию выше, то есть в pharm_app
+        # COPY --chown=andrey:andrey . .
+
+        # # Выбираем нового пользователя и от его имени выполняем команду ниже
+        # USER andrey
+
+        # CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
+        
+        
+    Далее необходимо добавить текущего пользователя в группу docker, которая имеет правильные разрешения для доступа к сокету 
+    Docker:
+        
+        # sudo usermod -aG docker <имя пользователя>
+
+    Далее в корневой папке проекта, где находится 'Dockerfile' создаём образ нашшего проекта:
+        
+        # docker build -t <название образа> .
+        
+    Создаём файл '.env' в корневой папке проекта, добавляем его в '.gitignore' и пишем следующее:
+        
+        # PostgreSQL configuration
+        # POSTGRES_HOST=localhost
+        # POSTGRES_PORT=5432
+        # POSTGRES_USER=mainrole
+        # POSTGRES_PASSWORD=abemuH77!
+        # POSTGRES_DB=pharmapp_db
+        # Django configuration:
+        # DJANGO_SETTINGS_MODULE=core.settings
+        # DJANGO_SECRET_KEY=django-insecure-craodd_%_m$dl2ns9o#!hmvno56v_k=o9cl_93@(fczt+ut_o@
+        # JWT configuration
+        # SIMPLE_JWT_ALGORITHM=HS256
+        # SIMPLE_JWT_SIGNING_KEY=G4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKx
+        # SIMPLE_JWT_VERIFYING_KEY=wRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+    
+        В этот файл нужно добавлять переменные, которые необходимо скрыть, для этого в 'settings.py' оборачиваем такие 
+            данные в "os.getenv", например:
+                # '<переменная в settings.py>' = os.getenv('<кастомное имя переменной для .env>', 'значение')
+            
+            Далее добавляем их в '.env' без кавычек в виде <кастомное имя переменной для .env>=значение
+        
+        Причание: 
+            Для удаления образа используется команда - # docker rmi <IMAGE ID>
+            
+            Посмотреть 'IMAGE ID' можно по команде - # docker images
+
