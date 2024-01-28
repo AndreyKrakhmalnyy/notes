@@ -77,7 +77,10 @@
 6. при возникновении ошибок на фоне миграций можно воспользоваться командой в статье 
     https://vivazzi.pro/ru/it/programming-error-relation-already-exists/.
 
-7. создание кастомных таблиц, менеджера пользователей
+7. для создания кастомных таблиц используются классы "AbstractBaseUser, PermissionsMixin", для 
+    менеджера пользователей используется класс "BaseUserManager", для этого делаем 
+    импорт как указано ниже:
+        # from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
     
    
    
