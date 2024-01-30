@@ -112,7 +112,12 @@
 1. Проверить models.py (правильно ли сделано связывание таблиц, метод create_user - нужен ли блок try-except, нужен ли импорт
    from __future__ import unicode_literals, использование разных параметров в User и в BirthPlace)
 2. Сериализаторы - нужны ли они и что это такое, что там нужно прописывать
-
+3. почему 'SECRET_KEY' при добавлении в '.env' указывает на ошибку?
+    WARN[0000] The "dl2ns9o" variable is not set. Defaulting to a blank string. 
+    WARN[0000] The "dl2ns9o" variable is not set. Defaulting to a blank string. 
+    WARN[0000] The "dl2ns9o" variable is not set. Defaulting to a blank string. 
+    WARN[0000] The "dl2ns9o" variable is not set. Defaulting to a blank string. 
+    WARN[0000] The "dl2ns9o" variable is not set. Defaulting to a blank string. 
 
 Уже выполнил:
     1. JWT авторизацию
@@ -121,4 +126,6 @@
     4. добавил себя в группу 'Docker' и создал образ приложения
     5. создал '.env', добавил в '.gitignore', в 'settings.py' необходимые переменные обернул в 'os.getenv()' и добавил
         их в '.env'
+    6. создал 'docker-compose.yml', запустил контейнер 'docker compose up'
+    
     

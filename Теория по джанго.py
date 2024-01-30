@@ -215,3 +215,41 @@
 
     При удалении какой-либо зависимости необходимо его также убрать из списка в "requirements.txt".
     
+
+Отображение шаблонов и статических файлов
+    Для этого необходимо прежде всего доп. приложение (например, 'pages') связать с основным приложением (например, 'core'). 
+    К примеру, в приложении 'pages' есть папка с шаблонами (полный путь pages/templates/pages/base.html), а также папка 'static' 
+    со стилями (полный путь pages/static/pages/css/main.css), для отображения делаем следующее:
+    
+        1. в 'base.html' в 'head' указываем ссылку на файл стилей 'main.css':
+            # {% load static %} <link href="{% static 'pages/css/main.css' %}" rel="stylesheet">
+        2. в 'views.py' указываем ссылку на 'base.html':
+            # from django.shortcuts import render
+
+            # def home(request):
+            #     return render(request, 'pages/base.html')
+        3. создаём в 'pages' файл 'urls.py' и добавляем 
+            # from django.urls import path - копируем из 'core/urls.py'
+            # from . import views - из текущей директории импортируем 'views.py'
+
+            # urlpatterns = [
+            #     path('', views.home) - указываем ссылку на имя метода, который возвращает шаблон 'base.html'
+            # ]
+        4. в 'core/urls.py' добавляем путь к 'pages/urls.py'
+            # from django.contrib import admin
+            # from django.urls import path, include 
+
+            #         urlpatterns = [
+            # path('pages/', include('pages.urls')), - ссылаемся на 'pages/urls.py' в котором прописаны все пути приложения
+            # path('admin/', admin.site.urls),
+            #         ]
+        5. также добавляем в 'core/settings.py' само приложение в список:
+            INSTALLED_APPS = [
+                'django.contrib.admin',
+                'django.contrib.auth',
+                'django.contrib.contenttypes',
+                'django.contrib.sessions',
+                'django.contrib.messages',
+                'django.contrib.staticfiles',
+                'pages.apps.PagesConfig', - параметр '.apps.PagesConfig' это ссылка на конфиг в 'pages/apps.py'
+            ]
