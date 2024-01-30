@@ -274,3 +274,4 @@
 Хорошие гайды:
     https://www.youtube.com/watch?v=YgNFEeiqGyw
     https://www.youtube.com/watch?v=u9JExSCA9eE
+    https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04-ru
