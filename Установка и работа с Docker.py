@@ -149,6 +149,8 @@
         Причание: 
             Для удаления образа используется команда - # docker rmi <IMAGE ID>
             
+            Для удаления всех образов используется команда - # docker system prune -a
+            
             Посмотреть 'IMAGE ID' можно по команде - # docker images
         
     В 'settings.py' исправляем значение переменной:
@@ -163,6 +165,8 @@
     неиспользуемых сетей (сети, которые не используются ни при одном контейнере), неиспользуемых томов (тома, которые не связаны ни с одним контейнером)
     используется команда:
         # docker system prune
+        
+    Для удаления всех контейнеров и образов 
 
     Для остановки всех сервисов, связанных с вашим проектом, и удаления связанных с ним контейнеров, сетнй, томов и образов:
         # docker compose down
@@ -275,3 +279,5 @@
     https://www.youtube.com/watch?v=YgNFEeiqGyw
     https://www.youtube.com/watch?v=u9JExSCA9eE
     https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04-ru
+    
+    
