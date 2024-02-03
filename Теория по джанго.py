@@ -253,3 +253,15 @@
                 'django.contrib.staticfiles',
                 'pages.apps.PagesConfig', - параметр '.apps.PagesConfig' это ссылка на конфиг в 'pages/apps.py'
             ]
+            
+            
+Прочие полезные команды:    
+    # pip --outdated - список пакетов, у которых есть более актуальные версии
+    # pip install --upgrade <package_name> - обновление конкретного пакета
+    # pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install -U - обновление всех пакетов
+    
+Очистка 'Recent actions' в админке:
+   # python3 manage.py shell
+   # from django.contrib.admin.models import LogEntry
+
+   # LogEntry.objects.all().delete()
