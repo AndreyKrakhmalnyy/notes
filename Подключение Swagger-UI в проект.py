@@ -112,3 +112,5 @@
     # ]
     
 По маршруту 'api/schema/swagger-ui/' заходим в 'swagger'.
+
+Ссылка: https://gadjimuradov.ru/post/swagger-dlya-django-rest-framework/
