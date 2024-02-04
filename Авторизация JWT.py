@@ -1,8 +1,10 @@
+Для полноценной и удобной проверки работы JWT авторизации перед подключением её в проект рекомендуется подключить
+    'DRF' и 'OpenAPI/Swagger-UI'.
+
 Этапы:
 
-1. Войти в окружение и установить следующие пакеты:
-    # djangorestframework           
-    # djangorestframework-jwt       
+1. Установить пакеты ниже и локально в проект и глобально:
+    # djangorestframework              
     # djangorestframework-simplejwt
     
 2. в 'settings.py' вставляем следующие строки:
@@ -56,33 +58,21 @@
 3. в 'INSTALLED_APPS' добавляем:
     
     #     INSTALLED_APPS = [
-    #     'django.contrib.admin',
-    #     'django.contrib.auth',
-    #     'django.contrib.contenttypes',
-    #     'django.contrib.sessions',
-    #     'django.contrib.messages',
-    #     'django.contrib.staticfiles',
     #     'rest_framework_simplejwt',
     # ]
 
 4. в 'urls.py' добавляем:
     
-    # path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    # path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    # path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
+    # path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'), - получение токена, вводятся данные суперпользователя
+    # path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'), - обновление refresh токена
+    # path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'), 
     
-5. установить 'psql' глобально, завести БД, пользователя с паролем, присвоить ему созданную БД, так же установить 
-    'psycopg2' в окружение проекта, создать таблицы в проекте с помощью Django ORM (инструкции в файле 'Модели на Джанго.py').
-    
-6. при возникновении ошибок на фоне миграций можно воспользоваться командой в статье 
-    https://vivazzi.pro/ru/it/programming-error-relation-already-exists/.
 
-7. для создания кастомных таблиц используются классы "AbstractBaseUser, PermissionsMixin", для 
-    менеджера пользователей используется класс "BaseUserManager", для этого делаем 
-    импорт как указано ниже:
-        # from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+Теперь для получения какой-либо информации будет необходимо сначала перейти на 'api/token/', ввести данные зарегистрированного
+    пользователя в админке, после чего будут получены 'refresh' и 'access' токены, далее перейти в 'OpenAPI/Swagger-UI'
+    и ввести токен (значок замочка) после чего можно будет выполнять соответствующие GET, POST и тд запросы.
     
    
    
-Ссылка на документацию: https://django-rest-framework-simplejwt.readthedocs.io/en/latest/getting_started.html
+Ссылка на документацию: https://proproprogs.ru/django/drf-delaem-avtorizaciyu-po-jwt-tokenam
    
