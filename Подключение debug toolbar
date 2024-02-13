@@ -1,0 +1,85 @@
+Этапы
+
+1. Установите пакет
+    Рекомендуемый способ установки панели инструментов отладки — через pip :
+
+    # python -m pip install django-debug-toolbar
+
+2. Проверьте предварительные условия
+    Панель инструментов отладки требует от ядра Django двух вещей. Они уже настроены в шаблоне Django по умолчанию startproject, 
+    поэтому в большинстве случаев они уже настроены.
+
+    2.1. Сначала убедитесь, что 'django.contrib.staticfiles'это указано в ваших INSTALLED_APPSнастройках и настроено правильно :
+
+    # INSTALLED_APPS = [
+    #     # ...
+    #     "django.contrib.staticfiles",
+    #     # ...
+    # ]
+    # STATIC_URL = "static/"
+    
+    2.2. Во-вторых, убедитесь, что ваши TEMPLATES настройки содержат DjangoTemplatesсерверную часть, для параметров которой APP_DIRS 
+        установлены значения True:
+
+    # TEMPLATES = [
+    #     {
+    #         "BACKEND": "django.template.backends.django.DjangoTemplates",
+    #         "APP_DIRS": True,
+    #         # ...
+    #     }
+    # ]
+
+3. Установите приложение
+    Добавьте "debug_toolbar"в свою INSTALLED_APPS настройку:
+
+    # INSTALLED_APPS = [
+    #     # ...
+    #     "debug_toolbar",
+    #     # ...
+    # ]
+
+4. Добавьте URL-адреса
+    Добавьте URL-адреса панели инструментов django-debug-toolbar в URLconf вашего проекта:
+
+    # from django.urls import include, path
+
+    # urlpatterns = [
+    #     # ...
+    #     path("__debug__/", include("debug_toolbar.urls")),
+    # ]
+
+    В этом примере используется __debug__префикс, но вы можете использовать любой префикс, который не конфликтует с URL-адресами вашего приложения.
+
+5. Добавьте промежуточное ПО
+    анель инструментов отладки в основном реализована в промежуточном программном обеспечении. Добавьте его в свои MIDDLEWAREнастройки:
+
+    # MIDDLEWARE = [
+    #     # ...
+    #     "debug_toolbar.middleware.DebugToolbarMiddleware",
+    #     # ...
+    # ]
+
+    Предупреждение
+    Порядок MIDDLEWARE важен. Вам следует включить промежуточное программное обеспечение панели инструментов отладки в список как можно раньше. 
+
+6. Настройте внутренние IP-адреса
+    Панель инструментов отладки отображается только в том случае, если ваш IP-адрес указан в INTERNAL_IPSнастройках Django. Это означает, что для локальной разработки необходимо добавить "127.0.0.1"в INTERNAL_IPS. Вам необходимо создать этот параметр, если он еще не существует в вашем модуле настроек:
+
+    # INTERNAL_IPS = [
+    #     # ...
+    #     "127.0.0.1",
+    #     # ...
+    # ]
+    
+    Вы можете изменить логику определения необходимости отображения панели инструментов отладки с помощью параметра SHOW_TOOLBAR_CALLBACK.
+
+    Предупреждение
+
+    INTERNAL_IPSЕ сли вы используете Docker, в режиме отладки нужно настроить следующм образом:
+
+    # if DEBUG:
+    #     import socket  # only if you haven't already imported this
+    #     hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+    #     INTERNAL_IPS = [ip[: ip.rfind(".")] + ".1" for ip in ips] + ["127.0.0.1", "10.0.2.2"]
+
+Ссылка: https://django-debug-toolbar.readthedocs.io/en/latest/installation.html
